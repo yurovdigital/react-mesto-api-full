@@ -2,26 +2,22 @@ require('dotenv').config()
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 // Валидация
 const { celebrate, Joi, errors } = require('celebrate')
-
-// CORS
-const cors = require('./middlewares/cors')
 
 // База данных
 const mongoose = require('mongoose')
 // ПОРТ
 const { PORT = 3000 } = process.env
 
-app.use(cors)
-
-// CRASH-TEST
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт')
-  }, 0)
-})
+// // CRASH-TEST
+// app.get('/crash-test', () => {
+//   setTimeout(() => {
+//     throw new Error('Сервер сейчас упадёт')
+//   }, 0)
+// })
 
 // Роуты
 const usersRoutes = require('./routes/users')
@@ -43,6 +39,19 @@ mongoose.connect('mongodb://localhost:27017/mestodb')
 
 // Логгер запросов
 app.use(requestLogger)
+
+app.use(
+  cors({
+    origin: [
+      'https://yurov.mesto.nomoredomains.rocks',
+      'http://yurov.mesto.nomoredomains.rocks',
+      'http://localhost:3000',
+    ],
+    credentials: true,
+    methods: 'GET, PUT, PATCH, POST, DELETE',
+    allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  })
+)
 
 // Роуты для логина и регистрации
 app.post(

@@ -111,18 +111,16 @@ module.exports.updateUserAvatar = (req, res, next) => {
 // Логин
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body
-  User.findUserByCredentials(email, password)
+
+  return User.findUserByCredentials(email, password)
     .then((user) => {
-      const payload = { _id: user._id }
-      res.send({
-        token: jwt.sign(
-          payload,
-          NODE_ENV === 'production' ? JWT_SECRET : 'key',
-          { expiresIn: '7d' }
-        ),
-      })
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' }
+      )
+
+      res.status(200).send({ token })
     })
-    .catch((err) => {
-      next(err)
-    })
+    .catch(next)
 }
