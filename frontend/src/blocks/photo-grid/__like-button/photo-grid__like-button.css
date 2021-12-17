@@ -1,0 +1,20 @@
+.photo-grid__like-button {
+  width: 22px;
+  height: 19px;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+  background-image: url(../../../images/Like-Button.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+
+}
+
+.photo-grid__like-button:hover {
+  opacity: 0.6;
+}

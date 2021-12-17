@@ -1,0 +1,24 @@
+.header__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+
+}
+
+@media screen and (min-width: 768px) {
+  .header__container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 0 20px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .header__container {
+    padding: 0;
+  }
+  
+}
+

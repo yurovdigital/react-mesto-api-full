@@ -1,0 +1,13 @@
+.header__login-container {
+  display: flex;
+  align-items: center;
+  margin: 0 0 33px 0;
+}
+
+@media screen and (min-width: 768px) {
+  .header__login-container {
+    margin: 0 0 46px 0;
+    align-content: center;
+    justify-content: space-between;
+  }
+}

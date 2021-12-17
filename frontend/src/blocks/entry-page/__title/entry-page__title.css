@@ -1,0 +1,19 @@
+.entry-page__title {
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0 auto 40px;
+  color: #fff;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 900;
+}
+
+@media screen and (min-width: 1024px) {
+  .entry-page__title {
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 900;
+    margin: 0 auto 50px;
+  }
+}

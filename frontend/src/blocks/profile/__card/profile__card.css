@@ -1,0 +1,9 @@
+.profile__card {
+margin: 0 auto;
+}
+
+@media screen and (min-width: 1024px) {
+  .profile__card {
+    margin: 0 auto 0 30px;
+  }
+}

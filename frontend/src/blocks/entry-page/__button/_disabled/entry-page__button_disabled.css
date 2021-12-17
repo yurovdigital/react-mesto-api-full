@@ -1,0 +1,11 @@
+.entry-page__button_disabled {
+  opacity: 0.2;
+  border: 1px solid #fff;
+  background-color: transparent;
+  color: #fff;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

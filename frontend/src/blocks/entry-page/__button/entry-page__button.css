@@ -1,0 +1,30 @@
+.entry-page__button {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border-radius: 2px;
+  background-color: #fff;
+  width: 100%;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  text-align: center;
+  border: none;
+  height: 46px;
+  margin: 173px auto 0;
+  cursor: pointer;
+  transition: opacity .2s ease-in-out;
+}
+
+.entry-page__button:hover {
+  opacity: 0.85;
+}
+
+@media screen and (min-width: 1024px) {
+  .entry-page__button {
+    margin: 216px auto 0;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}

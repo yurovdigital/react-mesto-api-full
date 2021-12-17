@@ -1,0 +1,18 @@
+.header__user-email {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: 500;
+  margin: 0 22px 0 0;
+  padding: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .header__user-email {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
