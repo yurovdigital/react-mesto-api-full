@@ -1,25 +1,27 @@
-const router = require('express').Router()
+const router = require('express').Router();
 // Валидация
-const { celebrate, Joi } = require('celebrate')
+const { celebrate, Joi } = require('celebrate');
 
 const {
   getUsers,
   getUserId,
+  getCurrentUser,
   updateUser,
   updateUserAvatar,
-} = require('../controllers/users')
+} = require('../controllers/users');
 
-router.get('/users', getUsers)
+router.get('/users', getUsers);
+router.get('/users/me', getCurrentUser);
 
 router.get(
-  '/users/:userId',
+  '/users/:id',
   celebrate({
     params: Joi.object().keys({
       userId: Joi.string().hex().length(24).required(),
     }),
   }),
-  getUserId
-)
+  getUserId,
+);
 
 router.patch(
   '/users/me',
@@ -29,8 +31,8 @@ router.patch(
       about: Joi.string().min(2).max(30).required(),
     }),
   }),
-  updateUser
-)
+  updateUser,
+);
 
 router.patch(
   '/users/me/avatar',
@@ -38,12 +40,12 @@ router.patch(
     body: Joi.object().keys({
       avatar: Joi.string()
         .pattern(
-          /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
+          /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/,
         )
         .required(),
     }),
   }),
-  updateUserAvatar
-)
+  updateUserAvatar,
+);
 
-module.exports = router
+module.exports = router;

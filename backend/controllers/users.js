@@ -1,4 +1,3 @@
-require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
@@ -9,9 +8,6 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 // ERRORS
 // 400
 const BadRequestError = require("../errors/BadRequestError");
-
-// 401
-// const UnauthorizedError = require('../errors/UnauthorizedError');
 
 // 404
 const NotFoundError = require("../errors/NotFoundError");
@@ -30,9 +26,9 @@ module.exports.getUsers = (req, res, next) => {
 
 // Получение ID пользователя
 module.exports.getUserId = (req, res, next) => {
-  User.findById(req.params.userId)
+  User.findById(req.params.id)
     .orFail(new Error("NotValidId"))
-    .then((users) => res.status(200).send({ data: users }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
       if (err.name === "CastError") {
         next(new BadRequestError("Переданы некорректные данные."));
@@ -42,6 +38,15 @@ module.exports.getUserId = (req, res, next) => {
         next(err);
       }
     });
+};
+
+// Поиск конкретного пользователя
+module.exports.getCurrentUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      res.send(user);
+    })
+    .catch(next);
 };
 
 // Создание пользователя
@@ -75,13 +80,19 @@ module.exports.postUser = (req, res, next) => {
 // Обновление пользователя
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
-  User.create({ name, about })
+  User.findByIdAndUpdate(
+    req.user._id,
+    {
+      name,
+      about,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
     .orFail(new Error("NotValidId"))
-    .then((user) =>
-      res
-        .status(200)
-        .send(req.user._id, { data: user }, { new: true, runValidators: true })
-    )
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === "CastError") {
         next(new BadRequestError("Переданы некорректные данные."));
@@ -96,22 +107,22 @@ module.exports.updateUser = (req, res, next) => {
 // Обновление аватара пользователя
 module.exports.updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.create({ avatar })
-    .orFail(new Error("NotValidId"))
-    .then((user) =>
-      res
-        .status(200)
-        .send(req.user._id, { data: user }, { new: true, runValidators: true })
-    )
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Переданы некорректные данные."));
-      } else if (err.message === "NotValidId") {
-        next(new NotFoundError("Пользователь с указанным _id не найден."));
-      } else {
-        next(err);
-      }
-    });
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    {
+      new: true,
+      runValidators: true,
+    }
+  ).catch((err) => {
+    if (err.name === "CastError") {
+      next(new BadRequestError("Переданы некорректные данные."));
+    } else if (err.message === "NotValidId") {
+      next(new NotFoundError("Пользователь с указанным _id не найден."));
+    } else {
+      next(err);
+    }
+  });
 };
 
 // Логин
@@ -125,9 +136,8 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
         { expiresIn: "7d" }
       );
-      res.status(200).send({ token, name: user.name, email: user.email });
 
-      res.send({ token });
+      res.status(200).send({ token });
     })
     .catch(next);
 };

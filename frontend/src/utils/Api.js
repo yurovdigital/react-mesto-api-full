@@ -64,7 +64,7 @@ class Api {
 
   /* Лайк фото */
   setLike(photoId) {
-    return fetch(`${this._baseUrl}/cards/likes/${photoId}`, {
+    return fetch(`${this._baseUrl}/cards/${photoId}/likes`, {
       method: 'PUT',
       headers: this._headers,
       credentials: 'include',
@@ -73,7 +73,7 @@ class Api {
 
   /* Снятие лайка */
   deleteLike(photoId) {
-    return fetch(`${this._baseUrl}/cards/likes/${photoId}`, {
+    return fetch(`${this._baseUrl}/cards/${photoId}/likes`, {
       method: 'DELETE',
       headers: this._headers,
       credentials: 'include',
@@ -82,7 +82,7 @@ class Api {
 
   /* Снятие и установка лайка */
   changeLikeCardStatus(photoId, isLiked) {
-    return fetch(`${this._baseUrl}/cards/likes/${photoId}`, {
+    return fetch(`${this._baseUrl}/cards/${photoId}/likes`, {
       method: isLiked ? 'PUT' : 'DELETE',
       headers: this._headers,
       credentials: 'include',
