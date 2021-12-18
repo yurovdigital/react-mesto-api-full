@@ -157,8 +157,9 @@ function App() {
     const isLiked = card.likes.some((i) => i === currentUser._id)
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)))
+    api.changeLikeCardStatus(card._id, !isLiked)
+    .then((newCard) => {
+      setCards((state) => state.map((c) => (c._id === card._id ? newCard.card : c)))
     })
   }
 
@@ -167,7 +168,7 @@ function App() {
     api
       .deletePhoto(card._id)
       .then(() => {
-        setCards(cards.filter((item) => item._id !== card._id))
+        setCards((state) => state.filter((c) => c._id === card._id ? c.remove : c))
       })
       .catch((err) => {
         console.log(err)
@@ -179,7 +180,7 @@ function App() {
     api
       .addNewPhoto(card)
       .then((newCard) => {
-        setCards([newCard, ...cards])
+        setCards([newCard.card, ...cards])
         closeAllPopups()
       })
       .catch((err) => {
