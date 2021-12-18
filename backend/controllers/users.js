@@ -1,19 +1,19 @@
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const User = require("../models/user");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const User = require('../models/user');
 
 // ENV
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 // ERRORS
 // 400
-const BadRequestError = require("../errors/BadRequestError");
+const BadRequestError = require('../errors/BadRequestError');
 
 // 404
-const NotFoundError = require("../errors/NotFoundError");
+const NotFoundError = require('../errors/NotFoundError');
 
 // 409
-const ConflictError = require("../errors/ConflictError");
+const ConflictError = require('../errors/ConflictError');
 
 // Получение списка пользователей
 module.exports.getUsers = (req, res, next) => {
@@ -27,13 +27,13 @@ module.exports.getUsers = (req, res, next) => {
 // Получение ID пользователя
 module.exports.getUserId = (req, res, next) => {
   User.findById(req.params.id)
-    .orFail(new Error("NotValidId"))
+    .orFail(new Error('NotValidId'))
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Переданы некорректные данные."));
-      } else if (err.message === "NotValidId") {
-        next(new NotFoundError("Пользователь с указанным _id не найден."));
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else if (err.message === 'NotValidId') {
+        next(new NotFoundError('Пользователь с указанным _id не найден.'));
       } else {
         next(err);
       }
@@ -51,25 +51,25 @@ module.exports.getCurrentUser = (req, res, next) => {
 
 // Создание пользователя
 module.exports.postUser = (req, res, next) => {
-  const { name, about, avatar, email, password } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        name,
-        about,
-        avatar,
-        email,
-        password: hash,
-      })
-    )
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Переданы некорректные данные."));
+      if (err.name === 'ValidationError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
       } else if (err.code === 11000) {
         next(
-          new ConflictError("Пользователь с такими данными уже есть в базе")
+          new ConflictError('Пользователь с такими данными уже есть в базе'),
         );
       } else {
         next(err);
@@ -89,15 +89,15 @@ module.exports.updateUser = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   )
-    .orFail(new Error("NotValidId"))
+    .orFail(new Error('NotValidId'))
     .then((user) => res.send(user))
     .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Переданы некорректные данные."));
-      } else if (err.message === "NotValidId") {
-        next(new NotFoundError("Пользователь с указанным _id не найден."));
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Переданы некорректные данные.'));
+      } else if (err.message === 'NotValidId') {
+        next(new NotFoundError('Пользователь с указанным _id не найден.'));
       } else {
         next(err);
       }
@@ -113,12 +113,12 @@ module.exports.updateUserAvatar = (req, res, next) => {
     {
       new: true,
       runValidators: true,
-    }
+    },
   ).catch((err) => {
-    if (err.name === "CastError") {
-      next(new BadRequestError("Переданы некорректные данные."));
-    } else if (err.message === "NotValidId") {
-      next(new NotFoundError("Пользователь с указанным _id не найден."));
+    if (err.name === 'CastError') {
+      next(new BadRequestError('Переданы некорректные данные.'));
+    } else if (err.message === 'NotValidId') {
+      next(new NotFoundError('Пользователь с указанным _id не найден.'));
     } else {
       next(err);
     }
@@ -133,8 +133,8 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-        { expiresIn: "7d" }
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
       );
 
       res.status(200).send({ token });

@@ -40,7 +40,7 @@ router.patch(
     body: Joi.object().keys({
       avatar: Joi.string()
         .pattern(
-          /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/,
+          /^https?:\/\/(www.)?[a-zA-Z0-9-.]+\.[a-zA-Z]{2,}([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]+)*#*$/,
         )
         .required(),
     }),

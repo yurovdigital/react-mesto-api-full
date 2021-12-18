@@ -97,7 +97,7 @@ function App() {
         .checkToken(token)
         .then((res) => {
           setIsLoggedIn(true)
-          setEmail(res.data.email)
+          setEmail(res.email)
           history.push('/')
         })
         .catch((err) => {
@@ -131,7 +131,7 @@ function App() {
     api
       .updateAvatar(data)
       .then((res) => {
-        setCurrentUser(res)
+        setCurrentUser(res.avatar)
         closeAllPopups()
       })
       .catch((err) => {
