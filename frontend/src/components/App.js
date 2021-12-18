@@ -62,13 +62,13 @@ function App() {
           history.push('/sign-in')
         }
       })
-      
+
       .catch((err) => {
         setIsRegistrationSuccess(false)
         setIsInfoTooltipOpen(true)
         console.log(err)
       })
-      setLoading(false)
+    setLoading(false)
   }
 
   // Логин пользователя
@@ -77,7 +77,7 @@ function App() {
       .login(email, password)
       .then((res) => {
         if (res) {
-          localStorage.setItem('jwt', res.token)
+          localStorage.setItem('token', res.token)
           setIsLoggedIn(true)
           setEmail(email)
           history.push('/')
@@ -90,7 +90,7 @@ function App() {
 
   // Проверка токена
   React.useEffect(() => {
-    const jwt = localStorage.getItem('jwt')
+    const jwt = localStorage.getItem('token')
     if (jwt) {
       auth
         .checkToken(jwt)
@@ -107,7 +107,7 @@ function App() {
 
   // Выход из аккаунта
   function handleSignOut() {
-    localStorage.removeItem('jwt')
+    localStorage.removeItem('token')
     setIsLoggedIn(false)
     history.push('/sign-in')
   }
@@ -216,10 +216,7 @@ function App() {
       <div className="body">
         <div className="page">
           {/* HEADER */}
-          <Header 
-          userEmail={email} 
-          onSignOut={handleSignOut} 
-          />
+          <Header userEmail={email} onSignOut={handleSignOut} />
           {/* MAIN */}
           <Switch>
             <ProtectedRoute
@@ -248,38 +245,36 @@ function App() {
 
           {/* FOOTER */}
           <Footer />
-
-         
         </div>
 
-         {/* POPUP - INFO TOOLTIP */}
-         <InfoTooltip
-            isOpen={isInfoTooltipOpen}
-            onClose={closeAllPopups}
-            isRegistrationSuccess={isRegistrationSuccess}
-          />
-          {/* POPUP - PROFILE EDIT */}
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onUpdateUser={handleUpdateUser}
-          />
+        {/* POPUP - INFO TOOLTIP */}
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={closeAllPopups}
+          isRegistrationSuccess={isRegistrationSuccess}
+        />
+        {/* POPUP - PROFILE EDIT */}
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
+        />
 
-          {/* POPUP - EDIT AVATAR */}
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onUpdateAvatar={handleUpdateAvatar}
-          />
-          {/* POPUP - ADD PHOTO */}
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
-            onAddPlace={handleAddPlaceSubmit}
-          />
+        {/* POPUP - EDIT AVATAR */}
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
+        {/* POPUP - ADD PHOTO */}
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
-          {/* POPUP - IMAGE FULLSCREEN */}
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+        {/* POPUP - IMAGE FULLSCREEN */}
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
     </CurrentUserContext.Provider>
   )

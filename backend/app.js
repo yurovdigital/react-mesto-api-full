@@ -1,44 +1,37 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // Валидация
-const { celebrate, Joi, errors } = require('celebrate')
+const { celebrate, Joi, errors } = require('celebrate');
 
 // База данных
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 // ПОРТ
-const { PORT = 3000 } = process.env
-
-// // CRASH-TEST
-// app.get('/crash-test', () => {
-//   setTimeout(() => {
-//     throw new Error('Сервер сейчас упадёт')
-//   }, 0)
-// })
+const { PORT = 3000 } = process.env;
 
 // Роуты
-const usersRoutes = require('./routes/users')
-const cardRoutes = require('./routes/cards')
-const { postUser, login } = require('./controllers/users')
+const usersRoutes = require('./routes/users');
+const cardRoutes = require('./routes/cards');
+const { postUser, login } = require('./controllers/users');
 
 // Middlewares
-const auth = require('./middlewares/auth')
-const error = require('./middlewares/error')
-const { requestLogger, errorLogger } = require('./middlewares/logger')
+const auth = require('./middlewares/auth');
+const error = require('./middlewares/error');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const app = express()
+const app = express();
 
 // BodyParser
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/mestodb')
+mongoose.connect('mongodb://localhost:27017/mestodb');
 
 // Логгер запросов
-app.use(requestLogger)
+app.use(requestLogger);
 
 app.use(
   cors({
@@ -50,8 +43,15 @@ app.use(
     credentials: true,
     methods: 'GET, PUT, PATCH, POST, DELETE',
     allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-  })
-)
+  }),
+);
+
+// CRASH-TEST
+// app.get('/crash-test', () => {
+//   setTimeout(() => {
+//     throw new Error('Сервер сейчас упадёт')
+//   }, 0)
+// })
 
 // Роуты для логина и регистрации
 app.post(
@@ -62,8 +62,8 @@ app.post(
       password: Joi.string().min(5).required(),
     }),
   }),
-  login
-)
+  login,
+);
 app.post(
   '/signup',
   celebrate({
@@ -73,26 +73,26 @@ app.post(
       name: Joi.string().min(2).max(30),
       about: Joi.string().min(2).max(30),
       avatar: Joi.string().pattern(
-        /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
+        /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/,
       ),
     }),
   }),
-  postUser
-)
+  postUser,
+);
 
 // Авторизация
-app.use(auth)
+app.use(auth);
 
-app.use('/', usersRoutes)
-app.use('/', cardRoutes)
+app.use('/', usersRoutes);
+app.use('/', cardRoutes);
 
 // Логгер ошибок
-app.use(errorLogger)
+app.use(errorLogger);
 
-app.use(errors())
-app.use(error)
+app.use(errors());
+app.use(error);
 
 // Запуск сервера
 app.listen(PORT, () => {
-  console.log(`Сервер запущен на порту: ${PORT}`)
-})
+  console.log(`Сервер запущен на порту: ${PORT}`);
+});

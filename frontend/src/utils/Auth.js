@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co'
+export const BASE_URL = 'https://api.yurov.mesto.nomoredomains.rocks'
 
 const hanldeResponse = (res) => {
   if (!res.ok) {
@@ -14,9 +14,10 @@ export const registration = (email, password) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify({
-      "email": email,
-      "password": password,
+      email: email,
+      password: password,
     }),
   }).then((res) => hanldeResponse(res))
 }
@@ -28,6 +29,7 @@ export const login = (email, password) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify({
       email: email,
       password: password,
@@ -39,12 +41,12 @@ export const login = (email, password) => {
     })
 }
 
-export const checkToken = (jwt) => {
+export const checkToken = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
+    credentials: 'include',
   }).then((res) => hanldeResponse(res))
 }

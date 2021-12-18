@@ -15,6 +15,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._hanldeResponse(res))
   }
 
@@ -22,6 +23,7 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._hanldeResponse(res))
   }
 
@@ -30,6 +32,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name: data.name,
         about: data.about,
@@ -42,6 +45,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         name: data.name,
         link: data.link,
@@ -50,10 +54,11 @@ class Api {
   }
 
   /* Удаление фото */
-  deletePhoto(photoID) {
-    return fetch(`${this._baseUrl}/cards/${photoID}`, {
+  deletePhoto(photoId) {
+    return fetch(`${this._baseUrl}/cards/${photoId}`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._hanldeResponse(res))
   }
 
@@ -62,6 +67,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/likes/${photoId}`, {
       method: 'PUT',
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._hanldeResponse(res))
   }
 
@@ -70,6 +76,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/likes/${photoId}`, {
       method: 'DELETE',
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._hanldeResponse(res))
   }
 
@@ -78,6 +85,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards/likes/${photoId}`, {
       method: isLiked ? 'PUT' : 'DELETE',
       headers: this._headers,
+      credentials: 'include',
     }).then((res) => this._hanldeResponse(res))
   }
 
@@ -86,6 +94,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
+      credentials: 'include',
       body: JSON.stringify({
         avatar: data.avatar,
       }),
@@ -95,10 +104,10 @@ class Api {
 
 // NEW API
 const api = new Api({
-  baseUrl: 'https://api.yurov.mesto.nomoredomains.rocks',
-
+  baseUrl: 'http://api.yurov.mesto.nomoredomains.rocks',
   headers: {
     'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`,
   },
 })
 
