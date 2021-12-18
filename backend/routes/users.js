@@ -37,13 +37,14 @@ router.patch(
 router.patch(
   '/users/me/avatar',
   celebrate({
-    body: Joi.object().keys({
-      avatar: Joi.string()
-        .pattern(
-          /^https?:\/\/(www.)?[a-zA-Z0-9-.]+\.[a-zA-Z]{2,}([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]+)*#*$/,
-        )
-        .required(),
-    }),
+    body: Joi.object()
+      .keys({
+        avatar: Joi.string()
+          .pattern(
+            /^https?:\/\/(www.)?[a-zA-Z0-9-.]+\.[a-zA-Z]{2,}([a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]+)*#*$/,
+          )
+          .required(),
+      }),
   }),
   updateUserAvatar,
 );
