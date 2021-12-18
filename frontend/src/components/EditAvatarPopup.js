@@ -2,18 +2,43 @@ import React from 'react'
 import PopupWithForm from './PopupWithForm'
 
 function EditAvatarPopup(props) {
-  const avatarRef = React.useRef()
+  // const avatarRef = React.useRef()
 
-  function handleSubmit(evt) {
-    evt.preventDefault()
+  const [avatar, setAvatar] = React.useState('')
+
+  const [inputValid, setInputValid] = React.useState(false)
+  const [inputValidationMessage, setInputValidationMessage] = React.useState('')
+
+  // function handleSubmit(e) {
+  //   e.preventDefault()
+
+  //   props.onUpdateAvatar({
+  //     avatar: avatarRef.current.value,
+  //   })
+  // }
+
+  function handleSubmit(e) {
+    e.preventDefault()
 
     props.onUpdateAvatar({
-      link: avatarRef.current.value,
+      avatar: avatar,
     })
   }
 
+  function handleChange(e) {
+    const target = e.target
+    const targetValidity = target.validity.valid
+    setAvatar(target.value)
+    targetValidity ? setInputValid(true) : setInputValid(false)
+    targetValidity
+      ? setInputValidationMessage('')
+      : setInputValidationMessage(target.validationMessage)
+  }
+
   React.useEffect(() => {
-    avatarRef.current.value = ''
+    setAvatar('')
+    setInputValid(false)
+    setInputValidationMessage('')
   }, [props.isOpen])
 
   return (
@@ -24,17 +49,28 @@ function EditAvatarPopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
+      isValid={inputValid}
     >
       <section className="popup__section">
         <input
-          className="popup__input popup__input_type_avatar-url"
+          className={`popup__input popup__input_type_avatar-url ${
+            !inputValid && 'popup__input_type_error'
+          }`}
           type="url"
           name="avatar"
           id="avatar-input"
           placeholder="Ссылка на изображение"
-          ref={avatarRef}
+          //ref={avatarRef}
+          value={avatar}
+          onChange={handleChange}
           required
         />
+        <span
+          className={`popup__error ${!inputValid && 'popup__error_visible'}`}
+          id="avatar-input-error"
+        >
+          {inputValidationMessage}
+        </span>
       </section>
     </PopupWithForm>
   )
