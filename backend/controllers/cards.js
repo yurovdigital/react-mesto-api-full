@@ -22,7 +22,7 @@ module.exports.postCard = (req, res, next) => {
   const owner = req.user._id
   Card.create({ name, link, owner })
     .then((card) => {
-      res.status(200).send({ data: card });
+      res.status(200).send({ card });
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
