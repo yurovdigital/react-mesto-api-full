@@ -91,10 +91,10 @@ function App() {
 
   // Проверка токена
   React.useEffect(() => {
-    const jwt = localStorage.getItem('token')
-    if (jwt) {
+    const token = localStorage.getItem('token')
+    if (token) {
       auth
-        .checkToken(jwt)
+        .checkToken(token)
         .then((res) => {
           setIsLoggedIn(true)
           setEmail(res.data.email)
